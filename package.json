@@ -3,14 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "build:github": "tsc -b && cross-env GITHUB_PAGES=true vite build",
-    "deploy:github": "npm run build:github && gh-pages -d dist",
-    "lint": "oxlint",
-    "preview": "vite preview"
-  },
+ "scripts": {
+  "dev": "vite",
+  "build": "tsc -b && vite build",
+  "build:github": "cross-env GITHUB_PAGES=true npm run build",
+  "deploy:github": "npm run build:github && gh-pages -d dist",
+  "lint": "oxlint",
+  "preview": "vite preview"
+},
   "dependencies": {
     "@hugeicons/core-free-icons": "^4.4.0",
     "@hugeicons/react": "^1.1.10",
