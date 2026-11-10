@@ -1,32 +1,67 @@
-# React + TypeScript + Vite
+# Qraft
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+### Craft beautiful QR codes. Make every scan count.
 
-Currently, two official plugins are available:
+Qraft is a modern QR code design studio built to transform ordinary QR codes into personalized, visually appealing designs.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Create, customize, preview, and export QR codes through an intuitive design experience. Whether it's for a brand, business, event, or personal project, Qraft gives you the creative freedom to make every scan memorable.
 
-## React Compiler
+**[Visit Qraft](https://shadrach-chukwukere.github.io/qraft/)**
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the Oxlint configuration
+## Product Preview
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+<!-- Add your Qraft screenshot here -->
+<!-- ![Qraft Preview](./public/preview.png) -->
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
+## What Qraft Offers
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+- **Custom QR Design** — Create QR codes with personalized visual styles.
+- **Advanced Styling** — Customize colors, patterns, backgrounds, and corners.
+- **Live Preview** — See your designs update as you customize them.
+- **Logo Integration** — Incorporate branding into your QR code designs.
+- **Multiple Content Types** — Create QR codes for different information and destinations.
+- **Export Options** — Download your finished designs.
+- **Project Management** — Save and revisit your QR code projects.
+- **Responsive Experience** — Work comfortably across different screen sizes.
+
+## Built With
+
+Qraft is powered by a modern frontend technology stack:
+
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS 4
+- React Router
+- Zustand
+- QR Code Styling
+- Fabric.js
+- Hugeicons
+
+## Live Website
+
+Experience Qraft:
+
+**https://shadrach-chukwukere.github.io/qraft/**
+
+## Project Information
+
+| Detail | Information |
+|---|---|
+| Project | Qraft |
+| Category | QR Code Design Studio |
+| Status | Live |
+| Frontend | React + TypeScript |
+| Hosting | GitHub Pages & Vercel |
+
+---
+
+<p align="center">
+  **Qraft — QR codes, thoughtfully crafted.**
+</p>
+
+<p align="center">
+  © 2026 Qraft. All rights reserved.
+</p>
