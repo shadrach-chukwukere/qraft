@@ -280,7 +280,6 @@ export function StudioApp() {
   const [tab, setTab] = useState<"content" | "style" | "logo" | "frame">(
     "content",
   );
-  const [aiPrompt] = useState("");
   const [filter, setFilter] = useState("All");
   const [search, setSearch] = useState("");
   const [exportFormat, setExportFormat] = useState<
