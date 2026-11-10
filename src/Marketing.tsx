@@ -6,9 +6,12 @@ import { Privacy } from './pages/Privacy'
 import { Terms } from './pages/Terms'
 import { SignIn } from './pages/SignIn'
 import { MarketingLayout } from './components/Layout'
+import { ScrollToTop } from './components/ScollToTop'
 
 export function AppRouter() {
   return (
+    <>
+    <ScrollToTop />
     <Routes>
       <Route path="/studio/*" element={<StudioApp />} />
 
@@ -19,6 +22,6 @@ export function AppRouter() {
         <Route path="/terms" element={<Terms />} />
         <Route path="/signin" element={<SignIn />} />
       </Route>
-    </Routes>
+    </Routes></>
   )
 }

@@ -1,5 +1,7 @@
+
 import { Link } from 'react-router-dom'
 import { wrap } from '../ui'
+import { Logo } from './Navigation'
 
 const currentYear = new Date().getFullYear()
 
@@ -21,69 +23,85 @@ const columns = [
   },
 ]
 
+
+
 export function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-[#071228] pt-20 text-white/72">
+    <footer className="relative isolate overflow-hidden bg-[#071228] text-white">
+      {/* Background grid */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[length:52px_52px]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[length:52px_52px]"
       />
 
-      <div className={`${wrap} relative z-[1] grid grid-cols-[1fr_auto] gap-[60px] pb-[60px] max-[900px]:grid-cols-1 max-[900px]:gap-10`}>
-        <div>
-          <Link
-            to="/"
-            className="mb-3.5 inline-flex items-center gap-2.5 text-[22px] font-semibold tracking-[-0.02em] text-white"
-            aria-label="Qraft home"
-          >
-            <svg
-              width="30"
-              height="30"
-              viewBox="0 0 30 30"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
+      <div className={`${wrap} relative z-[1]`}>
+        {/* Main footer */}
+        <div className="grid grid-cols-1 gap-12 border-b border-white/10 py-16 sm:py-20 lg:grid-cols-[1.5fr_1fr] lg:gap-20">
+          
+          {/* Brand */}
+          <div className="max-w-[390px]">
+            <Link
+              to="/"
+              className="mb-5 inline-flex items-center gap-2.5 text-[23px] font-semibold tracking-[-0.04em] text-white"
+              aria-label="Qraft home"
             >
-              <rect width="22" height="22" x="4" y="4" rx="6" stroke="currentColor" strokeWidth="2" />
-              <path d="M8 8h4v4H8zM14 14h4v4h-4zM14 8h4v4h-4zM8 14h4v4H8z" fill="currentColor" />
-            </svg>
-            <span>qraft</span>
-          </Link>
-          <p className="max-w-[300px] text-[15px] text-white/60">
-            Good design gets noticed. Make yours in a few clicks.
-          </p>
+              <Logo />
+              <span>qraft</span>
+            </Link>
+
+            <p className="max-w-[340px] text-[14px] leading-7 text-white/55 sm:text-[15px]">
+              Good design gets noticed. Create beautiful, personalized QR
+              codes in just a few clicks.
+            </p>
+          </div>
+
+          {/* Navigation */}
+          <div className="grid grid-cols-2 gap-8 sm:gap-12">
+            {columns.map((column) => (
+              <div key={column.title} className="flex flex-col items-start gap-3">
+                <h3 className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#9db4e8]">
+                  {column.title}
+                </h3>
+
+                {column.items.map(([label, href]) => (
+                  <Link
+                    key={href}
+                    to={href}
+                    className="text-[13.5px] text-white/60 transition-colors hover:text-white sm:text-[14px]"
+                  >
+                    {label}
+                  </Link>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="flex gap-20 max-[900px]:gap-14 max-[600px]:flex-col max-[600px]:gap-8">
-          {columns.map((column) => (
-            <div key={column.title} className="flex flex-col gap-2.5">
-              <strong className="mb-1 text-xs font-medium uppercase tracking-[0.14em] text-[#9db4e8]">
-                {column.title}
-              </strong>
-              {column.items.map(([label, href]) => (
-                <Link
-                  key={href}
-                  to={href}
-                  className="py-[3px] text-[14.5px] text-white/72 transition-colors hover:text-white"
-                >
-                  {label}
-                </Link>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
+        {/* Bottom footer */}
+        <div className="flex flex-col gap-5 py-6 text-[12px] text-white/45 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:text-[13px]">
+          <span>
+            © {currentYear} Qraft. All rights reserved.
+          </span>
 
-      <div className={`${wrap} relative z-[1] flex justify-between gap-4 border-t border-white/10 py-6 text-[13px] text-white/50 max-[900px]:flex-col max-[900px]:items-start`}>
-        <span>© {currentYear} Qraft. All rights reserved.</span>
-        <div className="flex gap-4">
-          <Link to="/terms" className="text-white/60 hover:text-white">
-            Terms
-          </Link>
-          <span aria-hidden="true">•</span>
-          <Link to="/privacy" className="text-white/60 hover:text-white">
-            Privacy policy
-          </Link>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <Link
+              to="/terms"
+              className="transition-colors hover:text-white"
+            >
+              Terms
+            </Link>
+
+            <span aria-hidden="true" className="text-white/25">
+              ·
+            </span>
+
+            <Link
+              to="/privacy"
+              className="transition-colors hover:text-white"
+            >
+              Privacy policy
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
