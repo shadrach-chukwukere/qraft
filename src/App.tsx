@@ -280,7 +280,7 @@ export function StudioApp() {
   const [tab, setTab] = useState<"content" | "style" | "logo" | "frame">(
     "content",
   );
-  const [aiPrompt, setAiPrompt] = useState("");
+  const [aiPrompt] = useState("");
   const [filter, setFilter] = useState("All");
   const [search, setSearch] = useState("");
   const [exportFormat, setExportFormat] = useState<
@@ -457,36 +457,36 @@ export function StudioApp() {
       toast.error("Could not validate this QR code");
     }
   };
-  const applyAI = () => {
-    if (!aiPrompt.trim()) {
-      toast.error("Describe a style to get started");
-      return;
-    }
-    const prompt = aiPrompt.toLowerCase();
-    const colors = prompt.includes("blue")
-      ? ["#2857a4", "#f3f6fb"]
-      : prompt.includes("green")
-        ? ["#285941", "#eff6f0"]
-        : prompt.includes("red")
-          ? ["#a43d34", "#fff5f2"]
-          : prompt.includes("purple")
-            ? ["#57419a", "#f5f2ff"]
-            : prompt.includes("warm") || prompt.includes("restaurant")
-              ? ["#674b2f", "#f6eddf"]
-              : ["#0b1a3a", "#ffffff"];
-    const style: DotStyle =
-      prompt.includes("circle") || prompt.includes("dot")
-        ? "dots"
-        : prompt.includes("square")
-          ? "square"
-          : prompt.includes("classy")
-            ? "classy-rounded"
-            : "rounded";
-    edit({ foreground: colors[0], background: colors[1], dotStyle: style });
-    toast.success(
-      "Demo suggestion applied. AI generation is not connected yet.",
-    );
-  };
+  // const applyAI = () => {
+  //   if (!aiPrompt.trim()) {
+  //     toast.error("Describe a style to get started");
+  //     return;
+  //   }
+  //   const prompt = aiPrompt.toLowerCase();
+  //   const colors = prompt.includes("blue")
+  //     ? ["#2857a4", "#f3f6fb"]
+  //     : prompt.includes("green")
+  //       ? ["#285941", "#eff6f0"]
+  //       : prompt.includes("red")
+  //         ? ["#a43d34", "#fff5f2"]
+  //         : prompt.includes("purple")
+  //           ? ["#57419a", "#f5f2ff"]
+  //           : prompt.includes("warm") || prompt.includes("restaurant")
+  //             ? ["#674b2f", "#f6eddf"]
+  //             : ["#0b1a3a", "#ffffff"];
+  //   const style: DotStyle =
+  //     prompt.includes("circle") || prompt.includes("dot")
+  //       ? "dots"
+  //       : prompt.includes("square")
+  //         ? "square"
+  //         : prompt.includes("classy")
+  //           ? "classy-rounded"
+  //           : "rounded";
+  //   edit({ foreground: colors[0], background: colors[1], dotStyle: style });
+  //   toast.success(
+  //     "Demo suggestion applied. AI generation is not connected yet.",
+  //   );
+  // };
   const uploadLogo = (file?: File) => {
     if (!file) return;
     if (!/^image\/(png|jpeg|webp|svg\+xml)$/.test(file.type)) {
