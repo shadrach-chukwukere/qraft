@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  base: process.env.GITHUB_PAGES === 'true' ? '/qraft/' : '/',
   server: {
     host: '0.0.0.0',
   },
