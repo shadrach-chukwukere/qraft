@@ -2,7 +2,7 @@ import { h2 } from '../ui'
 
 export function FAQItem({ question, answer }: { question: string; answer: string }) {
   return (
-    <details className="group overflow-hidden rounded-[14px] border border-line bg-white">
+    <details className="group overflow-hidden rounded-[14px] border border-line bg-white transition-all">
       <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 text-base font-medium text-ink hover:bg-[#fcfcfe] [&::-webkit-details-marker]:hidden">
         <span>{question}</span>
         <span
