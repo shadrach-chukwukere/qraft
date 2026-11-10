@@ -1,0 +1,144 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ==========================================================================
+   Qraft design tokens
+   White canvas · deep navy · Lexend · pill buttons · generous whitespace
+   ========================================================================== */
+
+@theme {
+  --font-sans: "Lexend", ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    "Noto Sans", sans-serif;
+
+  /* Marketing palette */
+  --color-ink: #0a0f1a;
+  --color-ink-soft: #3d4555;
+  --color-navy: #0b1a3a;
+  --color-navy-deep: #071228;
+  --color-blue: #1b3a8c;
+  --color-blue-bright: #2a56c6;
+  --color-blue-soft: #eef2fb;
+  --color-off-white: #f7f8fb;
+  --color-muted: #667085;
+  --color-subtle: #6b7484;
+  --color-line: #e5e8ef;
+  --color-line-strong: #d3d8e2;
+
+  /* Depth */
+  --shadow-float: 0 24px 60px rgb(11 26 58 / 0.1);
+  --shadow-card: 0 12px 32px rgb(11 26 58 / 0.06);
+}
+
+/* Studio palette — switches with the saved theme. */
+:root {
+  --studio-bg: #f6f8fc;
+  --studio-surface: #ffffff;
+  --studio-surface-soft: #f3f6fb;
+  --studio-tint: #eef2fb;
+  --studio-text: #0a0f1a;
+  --studio-muted: #5b6472;
+  --studio-subtle: #68717f;
+  --studio-line: #e3e7ef;
+  --studio-line-strong: #cfd6e2;
+  --studio-primary: #0b1a3a;
+  --studio-primary-hover: #08152f;
+  --studio-on-primary: #ffffff;
+  --studio-accent: #1b3a8c;
+  --studio-success: #0f7a4d;
+  --studio-success-soft: #e9f7ef;
+  --studio-danger: #b42318;
+  --studio-shadow: 0 24px 60px rgb(11 26 58 / 0.08);
+  --studio-shadow-card: 0 12px 32px rgb(11 26 58 / 0.06);
+}
+
+:root[data-theme="dark"] {
+  --studio-bg: #071228;
+  --studio-surface: #0c1b3a;
+  --studio-surface-soft: #10224a;
+  --studio-tint: #162b58;
+  --studio-text: #f3f6fc;
+  --studio-muted: #a9b6cf;
+  --studio-subtle: #8595b4;
+  --studio-line: #1c315c;
+  --studio-line-strong: #2a4274;
+  --studio-primary: #e8eefc;
+  --studio-primary-hover: #d7e2f8;
+  --studio-on-primary: #0b1a3a;
+  --studio-accent: #a9c2ff;
+  --studio-success: #7fe0b0;
+  --studio-success-soft: #0e2f2a;
+  --studio-danger: #ff9b91;
+  --studio-shadow: 0 24px 60px rgb(0 0 0 / 0.28);
+  --studio-shadow-card: 0 12px 32px rgb(0 0 0 / 0.22);
+}
+
+@theme inline {
+  --color-studio-bg: var(--studio-bg);
+  --color-studio-surface: var(--studio-surface);
+  --color-studio-surface-soft: var(--studio-surface-soft);
+  --color-studio-tint: var(--studio-tint);
+  --color-studio-text: var(--studio-text);
+  --color-studio-muted: var(--studio-muted);
+  --color-studio-subtle: var(--studio-subtle);
+  --color-studio-line: var(--studio-line);
+  --color-studio-line-strong: var(--studio-line-strong);
+  --color-studio-primary: var(--studio-primary);
+  --color-studio-primary-hover: var(--studio-primary-hover);
+  --color-studio-on-primary: var(--studio-on-primary);
+  --color-studio-accent: var(--studio-accent);
+  --color-studio-success: var(--studio-success);
+  --color-studio-success-soft: var(--studio-success-soft);
+  --color-studio-danger: var(--studio-danger);
+  --shadow-studio: var(--studio-shadow);
+  --shadow-studio-card: var(--studio-shadow-card);
+}
+
+@layer base {
+  #root {
+    min-height: 100vh;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white font-sans text-[17px] leading-[1.7] text-ink antialiased;
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-blue) 22%, transparent);
+  }
+
+  :focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--color-blue) 55%, transparent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
