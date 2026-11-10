@@ -1,113 +1,142 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { signIn } from '../auth'
-import { wrap, h1, buttonPrimary } from '../ui'
+import { supabase } from '../supabaseClient'
+import { toast } from 'sonner'
+import { h1 } from '../ui'
+import { GoogleButton } from '../components/GoogleButton'
 
 export function SignIn() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [googleLoading, setGoogleLoading] = useState(false)
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     if (!email.trim()) {
-      setError('Enter an email address to continue.')
+      toast.error('Enter an email address.')
       return
     }
-    signIn(email.trim())
-    navigate('/studio')
+    if (!password) {
+      toast.error('Enter a password.')
+      return
+    }
+
+    setLoading(true)
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+      if (error) throw error
+      toast.success('Signed in successfully')
+      navigate('/studio', { replace: true })
+    } catch (error: any) {
+      toast.error(error.message || 'Sign in failed')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleGoogleSignIn = async () => {
+    setGoogleLoading(true)
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      })
+      if (error) throw error
+      // OAuth redirects the page, so we won't reach here normally
+    } catch (error: any) {
+      setGoogleLoading(false)
+      toast.error(error.message || 'Google sign-in failed')
+    }
   }
 
   return (
     <section
-      className="relative min-h-[calc(100vh-86px)] pt-[90px] pb-[120px] overflow-hidden bg-white bg-[radial-gradient(ellipse_70%_60%_at_50%_0%_,#edf2ff_0%_,rgba(255,255,255,0)_72%)]"
+      className="min-h-[calc(100vh-86px)] flex items-center justify-center bg-off-white py-[40px] px-[20px]"
     >
-      <div className={`${wrap} max-w-[520px] mx-auto`}>
-        <div className="text-center mb-[30px]">
+      <div className="max-w-[520px] w-full">
+        <div className="mb-[40px] text-center">
           <h1 className={h1}>Sign in to Qraft</h1>
           <p className="mt-0 text-muted">QR design studio</p>
         </div>
 
-        <form className="p-[36px] rounded-[22px] border border-line bg-white shadow-card" onSubmit={handleSubmit} noValidate>
-          <label className="block mb-2 text-[14px] font-medium" htmlFor="signin-email">
-            Email address
-          </label>
-          <div className="flex items-center gap-2.5 h-[54px] px-4 rounded-[12px] border border-line-strong bg-white text-subtle mb-[20px] focus-within:border-blue focus-within:ring-[3px] focus-within:ring-blue-soft/60">
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              aria-hidden="true"
-            >
-              <rect x="3" y="5" width="18" height="14" rx="3" />
-              <path d="m3 7 9 6 9-6" />
-            </svg>
-            <input
-              id="signin-email"
-              type="email"
-              autoComplete="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(event) => {
-                setEmail(event.target.value)
-                setError('')
-              }}
-              className="flex-1 border-0 outline-0 bg-transparent text-[15px] text-ink"
-            />
+        <div className="space-y-[20px]">
+          {/* Google Button - top, prominent */}
+          <GoogleButton
+            onGoogleSignIn={handleGoogleSignIn}
+            fullWidth
+            loading={googleLoading}
+          />
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-line" />
+            </div>
+            <div className="relative flex justify-center text-[12px] font-medium text-subtle uppercase tracking-[0.14em]">
+              <span className="px-3 bg-off-white text-subtle">Or continue with email</span>
+            </div>
           </div>
 
-          <label className="block mb-2 text-[14px] font-medium" htmlFor="signin-password">
-            Password
-          </label>
-          <div className="flex items-center gap-2.5 h-[54px] px-4 rounded-[12px] border border-line-strong bg-white text-subtle mb-[20px] focus-within:border-blue focus-within:ring-[3px] focus-within:ring-blue-soft/60">
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              aria-hidden="true"
+          <form onSubmit={handleSubmit} noValidate className="space-y-[16px]">
+            <div className="space-y-[12px]">
+              <label className="block text-[14px] font-medium text-ink">
+                Email address
+              </label>
+              <input
+                type="email"
+                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                className="w-full min-h-[50px] px-[14px] py-[11px] rounded-[12px] border border-line-strong bg-white text-ink text-[15px] focus-visible:outline-0 focus-visible:border-blue focus-visible:ring-[3px] focus-visible:ring-blue-soft/60 transition-[border-color,box-shadow] duration-200 ease-out"
+              />
+            </div>
+
+            <div className="space-y-[12px]">
+              <label className="block text-[14px] font-medium text-ink">
+                Password
+              </label>
+              <input
+                type="password"
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full min-h-[50px] px-[14px] py-[11px] rounded-[12px] border border-line-strong bg-white text-ink text-[15px] focus-visible:outline-0 focus-visible:border-blue focus-visible:ring-[3px] focus-visible:ring-blue-soft/60 transition-[border-color,box-shadow] duration-200 ease-out"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full min-h-[50px] rounded-[12px] text-[15px] font-medium transition-[background,opacity] duration-200 ease-out disabled:opacity-60 disabled:cursor-not-allowed ${
+                loading
+                  ? 'bg-studio-surface-soft text-studio-muted border border-studio-line'
+                  : 'bg-navy text-white hover:bg-navy-deep'
+              }`}
             >
-              <rect x="4" y="10" width="16" height="10" rx="3" />
-              <path d="M8 10V7a4 4 0 0 1 8 0v3" />
-            </svg>
-            <input
-              id="signin-password"
-              type="password"
-              autoComplete="current-password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              className="flex-1 border-0 outline-0 bg-transparent text-[15px] text-ink"
-            />
-          </div>
+              {loading ? 'Signing in...' : 'Sign in'}
+            </button>
+          </form>
+        </div>
 
-          {error && (
-            <p className="mt-[-8px] mb-[16px] text-[13.5px] text-danger" role="alert">
-              {error}
-            </p>
-          )}
+        <p className="mt-[32px] text-center text-[14px] text-muted">
+          New here?{' '}
+          <Link to="/signup" className="text-blue font-medium hover:underline">
+            Create an account
+          </Link>
+        </p>
 
-          <button type="submit" className={`${buttonPrimary} w-full mt-[6px]`}>
-            Sign in
-          </button>
-
-          <p className="mt-[22px] text-center text-[14.5px] text-muted">
-            New here?{' '}
-            <Link to="/studio" className="text-blue font-medium hover:underline">
-              Get started
-            </Link>
-          </p>
-          <p className="mt-3 text-center text-[12.5px] leading-[1.6] text-subtle">
-            Demo sign-in for this local project. No account is created and no
-            data leaves your device.
-          </p>
-        </form>
+        <p className="text-center text-[12.5px] leading-[1.6] text-subtle mt-[24px]">
+          Sign in with Google to save your QR codes to your account. No password
+          needed.
+        </p>
       </div>
     </section>
   )
