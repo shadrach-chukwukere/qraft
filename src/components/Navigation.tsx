@@ -4,7 +4,7 @@ import { useAuth } from '../auth'
 import { buttonOutline, buttonPrimary, wrap } from '../ui'
 
 export const Logo = () => (
-  <img src="/qraft/logo.webp" width="30" height="30" alt="Qraft" />
+  <img src={`${import.meta.env.BASE_URL}logo.webp`} width="30" height="30" alt="Qraft" />
 )
 
 export function Header() {
