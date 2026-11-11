@@ -55,7 +55,7 @@ export function useAuth() {
 
     const updateFromSession = (session: { user: { email?: string } } | null) => {
       if (!active) return
-      setSignedIn(Boolean(session))
+      setSignedIn(Boolean(session) || isSignedIn())
       setEmail(session?.user.email || getEmail())
       setReady(true)
     }
