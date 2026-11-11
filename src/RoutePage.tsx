@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import { StudioApp } from './App'
 import { AuthGuard } from './components/AuthGuard'
 import { MarketingLayout } from './components/Layout'
+import { ScrollToTop } from './components/ScollToTop'
 import { Contact } from './screens/Contact'
 import { Overview } from './screens/Overview'
 import { Pricing } from './screens/Pricing'
@@ -17,9 +18,12 @@ export function RoutePage() {
 
   if (pathname.startsWith('/studio')) {
     return (
-      <AuthGuard>
-        <StudioApp />
-      </AuthGuard>
+      <>
+        <ScrollToTop />
+        <AuthGuard>
+          <StudioApp />
+        </AuthGuard>
+      </>
     )
   }
 
@@ -50,5 +54,10 @@ export function RoutePage() {
       page = <Overview />
   }
 
-  return <MarketingLayout>{page}</MarketingLayout>
+  return (
+    <>
+      <ScrollToTop />
+      <MarketingLayout>{page}</MarketingLayout>
+    </>
+  )
 }
