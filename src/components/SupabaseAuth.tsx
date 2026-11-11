@@ -1,14 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
+import { useRouter } from 'next/navigation';
+import { getSupabaseClient } from '../supabaseClient';
 import { toast } from 'sonner';
 
 type AuthMode = 'signin' | 'signup';
 
 export function SupabaseAuth() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [mode, setMode] = useState<AuthMode>('signin');
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -33,15 +33,15 @@ export function SupabaseAuth() {
     setLoading(true);
     try {
       if (mode === 'signin') {
-        const { error } = await supabase.auth.signInWithPassword({
+        const { error } = await getSupabaseClient().auth.signInWithPassword({
           email,
           password,
         });
         if (error) throw error;
         toast.success('Signed in successfully.');
-        navigate('/studio');
+        router.push('/studio');
       } else {
-        const { error } = await supabase.auth.signUp({
+        const { error } = await getSupabaseClient().auth.signUp({
           email,
           password,
           options: {
@@ -52,7 +52,7 @@ export function SupabaseAuth() {
         });
         if (error) throw error;
         toast.success('Account created. Check your email to confirm.');
-        navigate('/signin');
+        router.push('/signin');
       }
     } catch (error: any) {
       toast.error(error.message || 'Something went wrong.');
@@ -64,7 +64,7 @@ export function SupabaseAuth() {
   const handleSignInWithProvider = async (provider: 'google' | 'github') => {
     setLoading(true);
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { error } = await getSupabaseClient().auth.signInWithOAuth({
         provider,
         options: {
           redirectTo: `${window.location.origin}`,

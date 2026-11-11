@@ -1,67 +1,19 @@
 # Qraft
 
-### Craft beautiful QR codes. Make every scan count.
+Qraft is a QR code design studio built with Next.js, React, TypeScript, and Tailwind CSS.
 
-Qraft is a modern QR code design studio built to transform ordinary QR codes into personalized, visually appealing designs.
+## Run locally
 
-Create, customize, preview, and export QR codes through an intuitive design experience. Whether it's for a brand, business, event, or personal project, Qraft gives you the creative freedom to make every scan memorable.
+1. Install dependencies with `npm install`.
+2. Add the public Supabase settings to `.env.local`:
 
-**[Visit Qraft](https://shadrach-chukwukere.github.io/qraft/)**
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+   NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-client-id
+   ```
 
----
+   The Google client ID is optional. Supabase settings are needed for sign-in and account features.
+3. Start the development server with `npm run dev` and open `http://localhost:3000`.
 
-## Product Preview
-
-<!-- Add your Qraft screenshot here -->
-<!-- ![Qraft Preview](./public/preview.png) -->
-
-## What Qraft Offers
-
-- **Custom QR Design** — Create QR codes with personalized visual styles.
-- **Advanced Styling** — Customize colors, patterns, backgrounds, and corners.
-- **Live Preview** — See your designs update as you customize them.
-- **Logo Integration** — Incorporate branding into your QR code designs.
-- **Multiple Content Types** — Create QR codes for different information and destinations.
-- **Export Options** — Download your finished designs.
-- **Project Management** — Save and revisit your QR code projects.
-- **Responsive Experience** — Work comfortably across different screen sizes.
-
-## Built With
-
-Qraft is powered by a modern frontend technology stack:
-
-- React 19
-- TypeScript
-- Vite
-- Tailwind CSS 4
-- React Router
-- Zustand
-- QR Code Styling
-- Fabric.js
-- Hugeicons
-
-## Live Website
-
-Experience Qraft:
-
-**https://shadrach-chukwukere.github.io/qraft/**
-
-## Project Information
-
-| Detail | Information |
-|---|---|
-| Project | Qraft |
-| Category | QR Code Design Studio |
-| Status | Live |
-| Frontend | React + TypeScript |
-| Hosting | GitHub Pages & Vercel |
-
----
-
-<p align="center">
-  **Qraft — QR codes, thoughtfully crafted.**
-</p>
-
-<p align="center">
-  © 2026 Qraft. All rights reserved.
-</p>
+Use `npm run build` to create a production build and `npm start` to serve it locally.

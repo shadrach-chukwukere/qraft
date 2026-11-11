@@ -40,10 +40,17 @@ export function signOut() {
 }
 
 export function useAuth() {
-  const [signedIn, setSignedIn] = useState(isSignedIn)
+  const [signedIn, setSignedIn] = useState(false)
+  const [email, setEmail] = useState('')
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    const update = () => setSignedIn(isSignedIn())
+    const update = () => {
+      setSignedIn(isSignedIn())
+      setEmail(getEmail())
+      setReady(true)
+    }
+    update()
     window.addEventListener('qraft-auth', update)
     window.addEventListener('storage', update)
     return () => {
@@ -52,5 +59,5 @@ export function useAuth() {
     }
   }, [])
 
-  return { signedIn, email: getEmail(), signOut }
+  return { signedIn, email, ready, signOut }
 }

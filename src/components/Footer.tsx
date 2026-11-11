@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { wrap } from '../ui'
 import { Logo } from './Navigation'
 
@@ -11,7 +11,7 @@ export function Footer() {
         {/* Left: Logo & Copyright */}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
           <Link
-            to="/"
+            href="/"
             className="inline-flex items-center gap-2.5 text-[17px] font-semibold tracking-[-0.02em] text-ink"
             aria-label="Qraft home"
           >
@@ -26,13 +26,13 @@ export function Footer() {
 
         {/* Center / Right: Clean Inline Navigation Links */}
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[13.5px] text-ink-soft">
-          <Link to="/privacy" className="transition-colors hover:text-navy">
+          <Link href="/privacy" className="transition-colors hover:text-navy">
             Privacy policy
           </Link>
-          <Link to="/terms" className="transition-colors hover:text-navy">
+          <Link href="/terms" className="transition-colors hover:text-navy">
             Terms of service
           </Link>
-          <Link to="/contact" className="transition-colors hover:text-navy">
+          <Link href="/contact" className="transition-colors hover:text-navy">
             Contact
           </Link>
         </div>

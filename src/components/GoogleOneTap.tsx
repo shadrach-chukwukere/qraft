@@ -1,31 +1,31 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { supabase } from '../supabaseClient'
+import { useRouter } from 'next/navigation'
+import { getSupabaseClient } from '../supabaseClient'
 import { toast } from 'sonner'
 
 export function GoogleOneTap() {
-  const navigate = useNavigate()
+  const router = useRouter()
   const [loaded, setLoaded] = useState(false)
   const clientIdRef = useRef<string>('')
 
   const handleCredentialResponse = useCallback(async (response: any) => {
     try {
-      const { error } = await supabase.auth.signInWithIdToken({
+      const { error } = await getSupabaseClient().auth.signInWithIdToken({
         provider: 'google',
         token: response.credential,
       })
       if (error) throw error
       toast.success('Signed in with Google')
-      navigate('/studio', { replace: true })
+      router.replace('/studio')
     } catch (error: any) {
       toast.error(error.message || 'Google sign-in failed')
     }
-  }, [navigate])
+  }, [router])
 
   useEffect(() => {
-    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
+    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
     if (!clientId || loaded) return
     clientIdRef.current = clientId
 

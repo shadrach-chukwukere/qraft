@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
+import { getSupabaseClient } from '../supabaseClient';
 import type { QrCode, QrCodeInsert, QrCodeConfig } from '../types/database';
 import { toast } from 'sonner';
 
@@ -10,7 +10,7 @@ export function useQrCodes() {
   const fetchQrCodes = useCallback(async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
+      const { data, error } = await getSupabaseClient()
         .from('qr_codes')
         .select('*')
         .order('created_at', { ascending: false });
@@ -30,7 +30,7 @@ export function useQrCodes() {
     const load = async () => {
       setLoading(true);
       try {
-        const { data, error } = await supabase
+        const { data, error } = await getSupabaseClient()
           .from('qr_codes')
           .select('*')
           .order('created_at', { ascending: false });
@@ -47,7 +47,7 @@ export function useQrCodes() {
     load();
 
     // Subscribe to real-time changes for the current user's QR codes
-    const channel = supabase
+    const channel = getSupabaseClient()
       .channel('qr-codes-changes')
       .on(
         'postgres_changes',
@@ -60,7 +60,7 @@ export function useQrCodes() {
 
     return () => {
       mounted = false;
-      supabase.removeChannel(channel);
+      getSupabaseClient().removeChannel(channel);
     };
   }, []);
 
@@ -72,7 +72,7 @@ export function useQrCodes() {
     }) => {
       setLoading(true);
       try {
-        const { data: { user } } = await supabase.auth.getUser();
+        const { data: { user } } = await getSupabaseClient().auth.getUser();
         if (!user) {
           toast.error('You must be signed in to save QR codes.');
           return null;
@@ -85,7 +85,7 @@ export function useQrCodes() {
           config: values.config,
         };
 
-        const { data, error } = await supabase
+        const { data, error } = await getSupabaseClient()
           .from('qr_codes')
           .insert(insert)
           .select()
@@ -110,7 +110,7 @@ export function useQrCodes() {
     async (id: string, values: Partial<QrCodeInsert>) => {
       setLoading(true);
       try {
-        const { error } = await supabase
+        const { error } = await getSupabaseClient()
           .from('qr_codes')
           .update(values)
           .eq('id', id);
@@ -134,7 +134,7 @@ export function useQrCodes() {
     async (id: string) => {
       setLoading(true);
       try {
-        const { error } = await supabase.from('qr_codes').delete().eq('id', id);
+        const { error } = await getSupabaseClient().from('qr_codes').delete().eq('id', id);
 
         if (error) throw error;
 
@@ -154,7 +154,7 @@ export function useQrCodes() {
       const fileExt = file.name.split('.').pop();
       const fileName = `${userId}/${crypto.randomUUID()}.${fileExt}`;
 
-      const { error: uploadError } = await supabase.storage
+      const { error: uploadError } = await getSupabaseClient().storage
         .from('logos')
         .upload(fileName, file, {
           cacheControl: '3600',
@@ -163,7 +163,7 @@ export function useQrCodes() {
 
       if (uploadError) throw uploadError;
 
-      const { data: urlData } = supabase.storage
+      const { data: urlData } = getSupabaseClient().storage
         .from('logos')
         .getPublicUrl(fileName);
 

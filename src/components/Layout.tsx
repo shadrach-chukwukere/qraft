@@ -1,22 +1,22 @@
 import { useEffect } from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
+import { usePathname } from 'next/navigation'
 import { Header } from '../components/Navigation'
 import { Footer } from '../components/Footer'
 import { GoogleOneTap } from '../components/GoogleOneTap'
 
-export function MarketingLayout() {
-  const location = useLocation()
+export function MarketingLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
 
   useEffect(() => {
-    document.title = getTitle(location.pathname)
-  }, [location.pathname])
+    document.title = getTitle(pathname)
+  }, [pathname])
 
   return (
     <div className="overflow-x-clip bg-white text-ink">
       <GoogleOneTap />
       <Header />
       <main>
-        <Outlet />
+          {children}
       </main>
       <Footer />
     </div>

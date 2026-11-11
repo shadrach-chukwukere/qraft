@@ -1,22 +1,24 @@
 import { useEffect } from 'react'
-import { Navigate, useLocation } from 'react-router-dom'
+import { usePathname, useRouter } from 'next/navigation'
 import { useAuth } from '../auth'
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
-  const { signedIn } = useAuth()
-  const location = useLocation()
+  const { signedIn, ready } = useAuth()
+  const pathname = usePathname()
+  const router = useRouter()
 
   useEffect(() => {
-    if (!signedIn) {
+    if (ready && !signedIn) {
       // Only redirect if we're on a studio route
-      if (location.pathname.startsWith('/studio')) {
+      if (pathname.startsWith('/studio')) {
         window.dispatchEvent(new Event('qraft-auth'))
+        router.replace('/signin')
       }
     }
-  }, [signedIn, location.pathname])
+  }, [signedIn, ready, pathname, router])
 
-  if (!signedIn) {
-    return <Navigate to="/signin" replace state={{ from: location }} />
+  if (!ready || !signedIn) {
+    return null
   }
 
   return <>{children}</>

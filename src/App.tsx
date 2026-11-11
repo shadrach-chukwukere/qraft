@@ -17,7 +17,7 @@ import MagicWand01Icon from "@hugeicons/core-free-icons/MagicWand01Icon";
 import QrCode01Icon from "@hugeicons/core-free-icons/QrCode01Icon";
 import Search01Icon from "@hugeicons/core-free-icons/Search01Icon";
 import Settings01Icon from "@hugeicons/core-free-icons/Settings01Icon";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { Logo } from "./components/Navigation";
 
 type Section =
@@ -268,13 +268,8 @@ function payloadFor(kind: ContentType, value: string) {
   return text;
 }
 
-const readHash = (): Section => {
-  const hash = window.location.hash.replace("#", "");
-  return SECTIONS.includes(hash as Section) ? (hash as Section) : "home";
-};
-
 export function StudioApp() {
-  const [section, setSection] = useState<Section>(readHash);
+  const [section, setSection] = useState<Section>("home");
   const [project, setProject] = useState<Project>(blankProject);
   const [projects, setProjects] = useState<Project[]>(savedProjects);
   const [tab, setTab] = useState<"content" | "style" | "logo" | "frame">(
@@ -302,6 +297,15 @@ export function StudioApp() {
   );
 
   useEffect(() => {
+    const syncFromHash = () => {
+      const hash = window.location.hash.replace("#", "");
+      setSection(SECTIONS.includes(hash as Section) ? (hash as Section) : "home");
+    };
+    syncFromHash();
+    window.addEventListener("hashchange", syncFromHash);
+    return () => window.removeEventListener("hashchange", syncFromHash);
+  }, []);
+  useEffect(() => {
     document.title = "Studio — Qraft";
     // light mode only: clear any previously stored dark preference
     document.documentElement.dataset.theme = "light";
@@ -310,11 +314,6 @@ export function StudioApp() {
     } catch {
       /* ignore */
     }
-  }, []);
-  useEffect(() => {
-    const syncFromHash = () => setSection(readHash());
-    window.addEventListener("hashchange", syncFromHash);
-    return () => window.removeEventListener("hashchange", syncFromHash);
   }, []);
   useEffect(() => {
     const next = section === "home" ? "" : `#${section}`;
@@ -617,7 +616,7 @@ export function StudioApp() {
 
         <div className="mt-auto grid gap-4">
           <Link
-            to="/"
+            href="/"
             className="flex min-h-[46px] items-center gap-2.5 rounded-xl border border-studio-line px-3.5 text-[14px] font-medium text-studio-muted transition-[border-color,color] duration-200 ease-out hover:border-studio-line-strong hover:text-studio-text"
             aria-label="Back to website"
           >

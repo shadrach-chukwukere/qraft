@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { FAQItem } from '../components/FAQAccordion'
 import {
   wrap,
@@ -88,14 +88,14 @@ export function Contact() {
                 </p>
                 <div className="flex gap-[12px]">
                   <Link
-                    to="/"
+                    href="/"
                     className="h-[44px] w-[44px] flex items-center justify-center rounded-full border border-line bg-white text-ink hover:border-navy hover:text-navy transition-colors duration-200"
                     aria-label="Qraft home"
                   >
                     ←
                   </Link>
                   <Link
-                    to="/studio"
+                    href="/studio"
                     className={buttonPrimary}
                     aria-label="Open the studio"
                   >

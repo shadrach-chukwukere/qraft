@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { wrap } from '../ui'
 
 export type LegalSection = {
@@ -68,7 +68,7 @@ export function LegalPage({
           <p className="m-0 text-[15.5px] leading-[1.8] text-muted">
             This page describes the current studio. It will be updated if the product changes.
           </p>
-          <Link to="/studio" className="inline-flex items-center gap-1.5 mt-[32px] text-[14.5px] font-medium text-blue hover:underline">
+          <Link href="/studio" className="inline-flex items-center gap-1.5 mt-[32px] text-[14.5px] font-medium text-blue hover:underline">
             Open the studio
             <span aria-hidden="true">→</span>
           </Link>

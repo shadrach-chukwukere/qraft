@@ -1,15 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
-import { NavLink, Link } from 'react-router-dom'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useAuth } from '../auth'
 import { buttonOutline, buttonPrimary, wrap } from '../ui'
 
 export const Logo = () => (
-  <img src={`${import.meta.env.BASE_URL}logo.webp`} width="30" height="30" alt="Qraft" />
+  <img src="/logo.webp" width="30" height="30" alt="Qraft" />
 )
 
 export function Header() {
   const [open, setOpen] = useState(false)
   const { signedIn, signOut } = useAuth()
+  const pathname = usePathname()
   const navRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -22,7 +24,7 @@ export function Header() {
     return () => document.removeEventListener('mousedown', handleClick)
   }, [open])
 
-  const linkClass = ({ isActive }: { isActive: boolean }) =>
+  const linkClass = (isActive: boolean) =>
     `py-2 text-[15.5px] transition-colors hover:text-navy max-[900px]:border-b max-[900px]:border-line max-[900px]:py-4 max-[900px]:text-center max-[900px]:text-base ${
       isActive ? 'font-medium text-navy' : 'font-normal text-ink-soft'
     }`
@@ -33,7 +35,7 @@ export function Header() {
     <header className="sticky top-0 z-[1000] w-full border-b border-white/55 bg-[#f9fafb]/72 backdrop-blur-[20px] backdrop-saturate-180" ref={navRef}>
       <div className={`${wrap} flex h-[86px] items-center justify-between gap-6`}>
         <Link
-          to="/"
+          href="/"
           className="inline-flex items-center gap-2.5 text-xl font-semibold tracking-[-0.02em] text-ink [&_svg]:text-navy"
           aria-label="Qraft home"
           onClick={closeMenu}
@@ -74,16 +76,16 @@ export function Header() {
           aria-label="Main navigation"
         >
           <div className="flex items-center gap-[38px]">
-            <NavLink to="/" end className={linkClass}>
+            <Link href="/" className={linkClass(pathname === '/')}>
               Overview
-            </NavLink>
-            <NavLink to="/pricing" className={linkClass}>
+            </Link>
+            <Link href="/pricing" className={linkClass(pathname === '/pricing')}>
               Pricing
-            </NavLink>
+            </Link>
             {signedIn && (
-              <NavLink to="/studio" className={linkClass}>
+              <Link href="/studio" className={linkClass(pathname.startsWith('/studio'))}>
                 Studio
-              </NavLink>
+              </Link>
             )}
           </div>
 
@@ -97,10 +99,10 @@ export function Header() {
               </button>
             ) : (
               <>
-                <Link to="/signin" className={`${buttonOutline} min-h-[46px] px-6 text-[14.5px]`}>
+                <Link href="/signin" className={`${buttonOutline} min-h-[46px] px-6 text-[14.5px]`}>
                   Sign In
                 </Link>
-                <Link to="/signup" className={`${buttonPrimary} min-h-[46px] px-6 text-[14.5px]`}>
+                <Link href="/signup" className={`${buttonPrimary} min-h-[46px] px-6 text-[14.5px]`}>
                   Get Started
                 </Link>
               </>
@@ -118,16 +120,16 @@ export function Header() {
         <div className="overflow-hidden border-b border-line bg-white shadow-card">
           <nav className="flex flex-col px-6 pb-7 pt-4" aria-label="Mobile navigation">
             <div className="flex flex-col items-center">
-              <NavLink to="/" end className={linkClass} onClick={closeMenu}>
+              <Link href="/" className={linkClass(pathname === '/')} onClick={closeMenu}>
                 Overview
-              </NavLink>
-              <NavLink to="/pricing" className={linkClass} onClick={closeMenu}>
+              </Link>
+              <Link href="/pricing" className={linkClass(pathname === '/pricing')} onClick={closeMenu}>
                 Pricing
-              </NavLink>
+              </Link>
               {signedIn && (
-                <NavLink to="/studio" className={linkClass} onClick={closeMenu}>
+                <Link href="/studio" className={linkClass(pathname.startsWith('/studio'))} onClick={closeMenu}>
                   Studio
-                </NavLink>
+                </Link>
               )}
             </div>
 
@@ -145,14 +147,14 @@ export function Header() {
               ) : (
                 <>
                   <Link
-                    to="/signin"
+                    href="/signin"
                     className={`${buttonOutline} min-h-[46px] w-full justify-center px-6 text-[14.5px]`}
                     onClick={closeMenu}
                   >
                     Sign In
                   </Link>
                   <Link
-                    to="/signup"
+                    href="/signup"
                     className={`${buttonPrimary} min-h-[46px] w-full justify-center px-6 text-[14.5px]`}
                     onClick={closeMenu}
                   >

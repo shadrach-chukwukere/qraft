@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { FAQItem } from '../components/FAQAccordion'
 import {
   wrap,
@@ -109,7 +109,7 @@ export function Pricing() {
                 </span>
               </div>
 
-              <Link to="/studio" className={buttonPrimary}>
+              <Link href="/studio" className={buttonPrimary}>
                 Open the studio
               </Link>
 
@@ -254,7 +254,7 @@ export function Pricing() {
             Create your code, customize its appearance, and make it yours.
           </p>
 
-          <Link to="/studio" className={buttonPrimary}>
+          <Link href="/studio" className={buttonPrimary}>
             Open the studio
           </Link>
         </div>
