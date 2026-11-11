@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import QRCodeStyling, { type Options } from "qr-code-styling";
 import { HexColorPicker } from "react-colorful";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Add01Icon from "@hugeicons/core-free-icons/Add01Icon";
 import ArrowRight01Icon from "@hugeicons/core-free-icons/ArrowRight01Icon";
@@ -567,7 +567,6 @@ export function StudioApp() {
 
   return (
     <div className="min-h-screen bg-studio-bg font-sans text-[16px] leading-[1.6] text-studio-text [color-scheme:light]">
-      <Toaster position="bottom-right" theme="light" richColors />
 
       {/* Fixed sidebar — desktop only */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-[288px] flex-col gap-[30px] overflow-y-auto border-r border-studio-line bg-studio-surface px-5 pt-7 pb-[22px] lg:flex">

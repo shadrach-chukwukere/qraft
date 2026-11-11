@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { getSupabaseClient } from './supabaseClient'
 
 const SESSION_KEY = 'qraft-session'
 const EMAIL_KEY = 'qraft-email'
@@ -45,19 +46,53 @@ export function useAuth() {
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    const update = () => {
+    let active = true
+    const updateFromLocal = () => {
       setSignedIn(isSignedIn())
       setEmail(getEmail())
       setReady(true)
     }
-    update()
-    window.addEventListener('qraft-auth', update)
-    window.addEventListener('storage', update)
+
+    const updateFromSession = (session: { user: { email?: string } } | null) => {
+      if (!active) return
+      setSignedIn(Boolean(session))
+      setEmail(session?.user.email || getEmail())
+      setReady(true)
+    }
+
+    window.addEventListener('qraft-auth', updateFromLocal)
+    window.addEventListener('storage', updateFromLocal)
+
+    let unsubscribe = () => {}
+    try {
+      const supabase = getSupabaseClient()
+      void supabase.auth.getSession().then(({ data: { session } }) => {
+        updateFromSession(session)
+      }).catch(updateFromLocal)
+      const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+        updateFromSession(session)
+      })
+      unsubscribe = () => data.subscription.unsubscribe()
+    } catch {
+      updateFromLocal()
+    }
+
     return () => {
-      window.removeEventListener('qraft-auth', update)
-      window.removeEventListener('storage', update)
+      active = false
+      unsubscribe()
+      window.removeEventListener('qraft-auth', updateFromLocal)
+      window.removeEventListener('storage', updateFromLocal)
     }
   }, [])
 
-  return { signedIn, email, ready, signOut }
+  const handleSignOut = () => {
+    try {
+      void getSupabaseClient().auth.signOut()
+    } catch {
+      // Local sign-out still works when Supabase is not configured.
+    }
+    signOut()
+  }
+
+  return { signedIn, email, ready, signOut: handleSignOut }
 }
