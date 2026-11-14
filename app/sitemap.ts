@@ -1,7 +1,7 @@
 
 import type { MetadataRoute } from "next"
 
-const baseUrl = "https://qraft.studio"
+const baseUrl = "https://qraft-qrcode.vercel.app"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
